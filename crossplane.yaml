@@ -1,0 +1,21 @@
+apiVersion: meta.pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: configuration-caas-ml
+  annotations:
+    meta.crossplane.io/maintainer: The configuration-caas-ml Configuration
+    meta.crossplane.io/source: github.com/upbound/configuration-caas-ml
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      This configuration-caas-ml provides ai/ml infrastructure.
+    meta.crossplane.io/readme: |
+      This configuration combines an Upbound Cloud extension with an API definition.
+      The API enables control planes to create fully configured Kubernetes Service clusters,
+      incorporating cloud service components from the Upbound Official Providers,
+      and includes the option for ai/ml infrastructure. 
+spec:
+  crossplane:
+    version: ">=v1.12.1-0"
+  dependsOn:
+    - configuration: xpkg.upbound.io/upbound/configuration-caas
+      version: ">=v0.2.0"

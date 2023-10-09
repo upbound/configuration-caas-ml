@@ -1,0 +1,94 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xservices.ml.aws.caas.upbound.io
+  labels:
+    provider: aws
+spec:
+  group: ml.aws.caas.upbound.io
+  names:
+    kind: XService
+    plural: xservices
+  claimNames:
+    kind: Service
+    plural: services
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                description: ML Infrastructure configuration parameters.
+                properties:
+                  id:
+                    type: string
+                    description: ID of this Cluster to enable ML Infrastructure
+                  region:
+                    type: string
+                    description: Region is the region you'd like your resource to be created in.
+                  deletionPolicy:
+                    description: When the Composition is deleted, delete the AWS resources. Defaults to Delete
+                    enum:
+                    - Delete
+                    - Orphan
+                    type: string
+                    default: Delete
+                  providerConfigName:
+                    description: Crossplane ProviderConfig to use for provisioning this resources
+                    type: string
+                    default: default
+                  nodes:
+                    type: object
+                    description: gpu node group configuration parameters.
+                    properties:
+                      count:
+                        type: integer
+                        description: Desired node count, from 1 to 100.
+                        default: 1
+                      instanceType:
+                        type: string
+                        description: instance types associated with the Node Group.
+                        default: g5.12xlarge
+                      diskSize:
+                        type: integer
+                        description: Desired disk size for xvda
+                        default: 100
+                    required:
+                    - count
+                    - instanceType
+                  jupyter:
+                    description: Configuration for jupyter hf-token and notebooks
+                    items:
+                      properties:
+                        name:
+                          description: name of the secret
+                          type: string
+                        namespace:
+                          description: namespace fo the secret
+                          type: string
+                      type: object
+                      required:
+                      - name
+                      - namespace
+                    type: array
+                required:
+                - id
+                - region
+                - jupyter
+                - nodes
+            required:
+            - parameters
+          status:
+            type: object
+            properties:
+              status:
+                description: Freeform field containing status information for ml-infrastructure
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
