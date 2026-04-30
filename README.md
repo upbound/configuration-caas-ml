@@ -1,3 +1,8 @@
+> **This repository is archived.** It is a historical example and is no longer maintained. No replacement is available.
+
+---
+
+
 # configuration-caas-ml
 
 Configuration-caas-ml is a setup for deploying the Stable Diffusion Model using Cluster-as-a-Service in Upbound.
